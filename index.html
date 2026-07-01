@@ -3,38 +3,50 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="A simple runnable website for GitHub Pages." />
-    <title>Lot of Calc</title>
+    <meta name="description" content="A loan calculator that runs on GitHub Pages." />
+    <title>Loan Calculator</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main>
       <section class="hero">
-        <span class="badge">GitHub Pages Ready</span>
-        <h1>Welcome to your site</h1>
-        <p>This is a simple, runnable website that serves correctly from the repository homepage.</p>
-        <div class="cta-row">
-          <a class="cta primary" href="https://github.com/rexzhang2014/lot_of_calc" target="_blank" rel="noreferrer">View Repository</a>
-          <a class="cta secondary" href="https://pages.github.com/" target="_blank" rel="noreferrer">Learn More</a>
-        </div>
+        <span class="badge">GitHub Pages</span>
+        <h1>Loan Calculator</h1>
+        <p>Enter your loan details and calculate the repayment schedule directly in your browser.</p>
 
-        <div class="features">
-          <article class="card">
-            <h2>Static Site</h2>
-            <p>No build step required.</p>
-          </article>
-          <article class="card">
-            <h2>Fast</h2>
-            <p>Lightweight HTML, CSS, and JavaScript.</p>
-          </article>
-          <article class="card">
-            <h2>Deployable</h2>
-            <p>Works directly from GitHub Pages.</p>
-          </article>
-        </div>
+        <form id="loan-form" class="loan-form">
+          <label>
+            Principal
+            <input type="number" name="principal" value="650000" min="0" step="1000" required />
+          </label>
+
+          <label>
+            Annual rate (%)
+            <input type="number" name="annualRate" value="3.91" min="0" step="0.01" required />
+          </label>
+
+          <label>
+            Total months
+            <input type="number" name="totalMonths" value="324" min="1" step="1" required />
+          </label>
+
+          <label>
+            Repayment method
+            <select name="method">
+              <option value="equal-interest">Equal principal and interest</option>
+              <option value="equal-principal">Equal principal</option>
+            </select>
+          </label>
+
+          <button type="submit">Calculate</button>
+        </form>
+
+        <div id="summary" class="summary"></div>
+        <div id="result" class="result"></div>
       </section>
     </main>
 
-    <script src="script.js"></script>
+    <script src="calculator-core.js"></script>
+    <script src="calculator-ui.js"></script>
   </body>
 </html>
