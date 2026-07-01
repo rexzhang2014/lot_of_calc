@@ -11,6 +11,7 @@
       methodEqualInterest: 'Equal principal and interest',
       methodEqualPrincipal: 'Equal principal',
       calculateButton: 'Calculate',
+      resetButton: 'Reset',
       monthlyPayment: 'Monthly payment',
       totalPayment: 'Total payment',
       totalInterest: 'Total interest',
@@ -33,6 +34,7 @@
       methodEqualInterest: '等额本息',
       methodEqualPrincipal: '等额本金',
       calculateButton: '计算',
+      resetButton: '重置',
       monthlyPayment: '月供',
       totalPayment: '总还款额',
       totalInterest: '总利息',
@@ -51,7 +53,7 @@
     if (saved && translations[saved]) {
       return saved;
     }
-    return 'en';
+    return 'zh';
   }
 
   function applyLanguage(language) {
@@ -68,6 +70,7 @@
     document.getElementById('method-label').textContent = t.methodLabel;
     document.getElementById('language-label').textContent = t.languageLabel;
     document.getElementById('calculate-button').textContent = t.calculateButton;
+    document.getElementById('reset-button').textContent = t.resetButton;
 
     const methodSelect = document.getElementById('method');
     methodSelect.querySelector('[value="equal-interest"]').textContent = t.methodEqualInterest;

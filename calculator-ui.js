@@ -3,12 +3,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const resultContainer = document.getElementById('result');
   const summary = document.getElementById('summary');
   const languageSelect = document.getElementById('language');
+  const resetButton = document.getElementById('reset-button');
 
-  if (!form || !resultContainer || !summary || !languageSelect) {
+  if (!form || !resultContainer || !summary || !languageSelect || !resetButton) {
     return;
   }
 
   let lastResult = null;
+
+  function resetView() {
+    lastResult = null;
+    summary.innerHTML = '';
+    summary.dataset.rendered = 'false';
+    resultContainer.innerHTML = '';
+    form.reset();
+    form.principal.value = '650000';
+    form.annualRate.value = '3.91';
+    form.totalMonths.value = '324';
+    form.method.value = 'equal-interest';
+  }
 
   function renderResult(result) {
     const lang = window.i18n.getInitialLanguage();
@@ -73,6 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
     renderResult(result);
   });
 
+  resetButton.addEventListener('click', () => {
+    resetView();
+  });
+
   languageSelect.addEventListener('change', (event) => {
     const language = event.target.value;
     window.localStorage.setItem('loan-calculator-language', language);
@@ -85,4 +102,5 @@ document.addEventListener('DOMContentLoaded', () => {
   const initialLanguage = window.i18n.getInitialLanguage();
   languageSelect.value = initialLanguage;
   window.i18n.applyLanguage(initialLanguage);
+  resetView();
 });
