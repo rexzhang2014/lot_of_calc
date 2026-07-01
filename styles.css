@@ -163,6 +163,9 @@ p {
   border-radius: 16px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
+  position: sticky;
+  top: 1rem;
+  z-index: 20;
 }
 
 .prepayment-form {

@@ -94,11 +94,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     resultContainer.replaceChildren();
 
-    if (result.mode === 'prepayment' && result.sections) {
+    if (result.mode === 'prepayment') {
       const wrapper = document.createElement('div');
       wrapper.className = 'schedule-groups';
-      wrapper.appendChild(renderTable(result.sections.before, t, t.beforeScheduleSection, true));
-      wrapper.appendChild(renderTable(result.sections.after, t, t.afterScheduleSection, true));
+
+      if (Array.isArray(result.timelineSections) && result.timelineSections.length > 0) {
+        result.timelineSections.forEach((section) => {
+          wrapper.appendChild(renderTable(section.records, t, section.title, false));
+        });
+      } else if (result.sections) {
+        wrapper.appendChild(renderTable(result.sections.before, t, t.beforeScheduleSection, true));
+        wrapper.appendChild(renderTable(result.sections.after, t, t.afterScheduleSection, true));
+      }
+
       resultContainer.appendChild(wrapper);
 
       const prepaySummary = document.createElement('div');
@@ -169,11 +177,12 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const activeResult = lastPrepaymentResult || lastResult;
     const period = Math.round(Number(prepaymentForm.prepaymentPeriod.value));
     const amount = Math.round(Number(prepaymentForm.prepaymentAmount.value));
-    const balanceAtPeriod = lastResult.records[period - 1]?.remainingAfterPayment;
+    const balanceAtPeriod = activeResult.records[period - 1]?.remainingAfterPayment;
 
-    if (!Number.isInteger(period) || period < 1 || period >= lastResult.totalMonths) {
+    if (!Number.isInteger(period) || period < 1 || period >= activeResult.totalMonths) {
       setMessage('Please select a valid repayment period.', true);
       return;
     }
@@ -189,13 +198,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const prepaymentResult = window.loanCalculator.calculateSinglePrepayment(lastResult, {
+      const prepaymentResult = window.loanCalculator.calculateSinglePrepayment(activeResult, {
         period: prepaymentForm.prepaymentPeriod.value,
         amount: prepaymentForm.prepaymentAmount.value,
         strategy: prepaymentForm.prepaymentStrategy.value,
       });
 
       lastPrepaymentResult = prepaymentResult;
+      prepaymentForm.prepaymentPeriod.value = '';
+      prepaymentForm.prepaymentAmount.value = '';
       renderResult(prepaymentResult);
       setMessage('');
     } catch (error) {

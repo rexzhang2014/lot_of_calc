@@ -140,6 +140,27 @@
     };
 
     const fullRecords = [...beforeRecords, prepaymentRow, ...afterRecords];
+    const previousTimeline = Array.isArray(originalResult.timelineSections)
+      ? originalResult.timelineSections
+      : [];
+    const timelineSections = previousTimeline.length > 0
+      ? [
+          ...previousTimeline,
+          {
+            title: `After repayment ${previousTimeline.length + 1}`,
+            records: [prepaymentRow, ...afterRecords],
+          },
+        ]
+      : [
+          {
+            title: 'Before prepayment',
+            records: beforeRecords,
+          },
+          {
+            title: 'After repayment 1',
+            records: [prepaymentRow, ...afterRecords],
+          },
+        ];
 
     return {
       principal: originalResult.principal,
@@ -157,6 +178,7 @@
         before: beforeRecords,
         after: [prepaymentRow, ...afterRecords],
       },
+      timelineSections,
       prepayDetails: {
         period: prepayPeriod,
         amount: Number(prepayAmount.toFixed(2)),
