@@ -145,21 +145,30 @@
     const previousTimeline = Array.isArray(originalResult.timelineSections)
       ? originalResult.timelineSections
       : [];
-    const previousRepaymentCount = previousTimeline.filter((section) => section.title.startsWith('After repayment')).length;
+    const previousRepaymentCount = previousTimeline.reduce((count, section) => {
+      return Math.max(count, Number(section.repaymentIndex) || 0);
+    }, 0);
+    const clippedTimelineSections = previousTimeline.map((section) => ({
+      ...section,
+      records: (section.records || []).filter((record) => record.period <= prepayPeriod),
+    }));
     const timelineSections = previousTimeline.length > 0
       ? [
-          ...previousTimeline,
+          ...clippedTimelineSections,
           {
+            repaymentIndex: previousRepaymentCount + 1,
             title: `After repayment ${previousRepaymentCount + 1}`,
             records: [prepaymentRow, ...afterRecords],
           },
         ]
       : [
           {
+            repaymentIndex: 0,
             title: 'Before prepayment',
             records: beforeRecords,
           },
           {
+            repaymentIndex: 1,
             title: 'After repayment 1',
             records: [prepaymentRow, ...afterRecords],
           },

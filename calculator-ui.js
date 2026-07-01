@@ -47,6 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
     sectionSummary.textContent = title;
     section.appendChild(sectionSummary);
 
+    const tableWrapper = document.createElement('div');
+    tableWrapper.className = 'table-scroll-wrapper';
+
     const table = document.createElement('table');
     table.className = 'results-table';
     table.innerHTML = `
@@ -76,7 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
       rows.appendChild(row);
     });
 
-    section.appendChild(table);
+    tableWrapper.appendChild(table);
+    section.appendChild(tableWrapper);
     return section;
   }
 

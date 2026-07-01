@@ -121,6 +121,13 @@ p {
   margin-top: 1rem;
 }
 
+.table-scroll-wrapper {
+  max-height: min(50vh, 360px);
+  overflow: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
 .results-table th,
 .results-table td {
   padding: 0.7rem;
@@ -129,7 +136,10 @@ p {
 }
 
 .results-table th {
+  position: sticky;
+  top: 0;
   background: #f8fafc;
+  z-index: 2;
 }
 
 .highlight-row {
