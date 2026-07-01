@@ -2,6 +2,8 @@
 
 This repository contains a minimal static webpage for GitHub Pages.
 
+- project URL: [text](https://rexzhang2014.github.io/lot_of_calc/)
+
 ## Files
 
 - `index.html` - the homepage content
