@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const summary = document.getElementById('summary');
   const languageSelect = document.getElementById('language');
   const resetButton = document.getElementById('reset-button');
+  const prepaymentMessage = document.getElementById('prepayment-message');
 
   if (!form || !prepaymentForm || !resultContainer || !summary || !languageSelect || !resetButton) {
     return;
@@ -13,35 +14,39 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastResult = null;
   let lastPrepaymentResult = null;
 
+  function setMessage(message, isError = false) {
+    if (!prepaymentMessage) {
+      return;
+    }
+    prepaymentMessage.textContent = message;
+    prepaymentMessage.className = `form-message${isError ? ' error' : ''}`;
+  }
+
   function resetView() {
     lastResult = null;
     lastPrepaymentResult = null;
     summary.replaceChildren();
     summary.dataset.rendered = 'false';
     resultContainer.replaceChildren();
+    setMessage('');
     form.reset();
     form.principal.value = '650000';
     form.annualRate.value = '3.91';
     form.totalMonths.value = '324';
     form.method.value = 'equal-interest';
-    prepaymentForm.prepaymentPeriod.value = '';
-    prepaymentForm.prepaymentAmount.value = '';
+    prepaymentForm.reset();
     prepaymentForm.prepaymentStrategy.value = 'shorten-term';
   }
 
-  function renderResult(result) {
-    const lang = window.i18n.getInitialLanguage();
-    const t = window.i18n.translations[lang] || window.i18n.translations.en;
+  function renderTable(records, t, title, isOpen = true) {
+    const section = document.createElement('details');
+    section.className = 'schedule-section';
+    section.open = isOpen;
 
-    summary.innerHTML = `
-      <p><strong>${t.monthlyPayment}:</strong> ${window.loanCalculator.formatCurrency(result.monthlyPayment)}</p>
-      <p><strong>${t.totalPayment}:</strong> ${window.loanCalculator.formatCurrency(result.totalPayment)}</p>
-      <p><strong>${t.totalInterest}:</strong> ${window.loanCalculator.formatCurrency(result.totalInterest)}</p>
-      <p><strong>${t.interestRate}:</strong> ${window.loanCalculator.formatPercent(result.annualRatePercent)}</p>
-    `;
-    summary.dataset.rendered = 'true';
+    const sectionSummary = document.createElement('summary');
+    sectionSummary.textContent = title;
+    section.appendChild(sectionSummary);
 
-    resultContainer.innerHTML = '';
     const table = document.createElement('table');
     table.className = 'results-table';
     table.innerHTML = `
@@ -58,8 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
 
     const rows = table.querySelector('tbody');
-    result.records.forEach((record) => {
+    records.forEach((record) => {
       const row = document.createElement('tr');
+      row.className = record.isPrepayment ? 'highlight-row' : '';
       row.innerHTML = `
         <td>${record.period}</td>
         <td>${window.loanCalculator.formatCurrency(record.monthlyPayment)}</td>
@@ -70,7 +76,69 @@ document.addEventListener('DOMContentLoaded', () => {
       rows.appendChild(row);
     });
 
-    resultContainer.appendChild(table);
+    section.appendChild(table);
+    return section;
+  }
+
+  function renderResult(result) {
+    const lang = window.i18n.getInitialLanguage();
+    const t = window.i18n.translations[lang] || window.i18n.translations.en;
+
+    summary.innerHTML = `
+      <p><strong>${t.monthlyPayment}:</strong> ${window.loanCalculator.formatCurrency(result.monthlyPayment)}</p>
+      <p><strong>${t.totalPayment}:</strong> ${window.loanCalculator.formatCurrency(result.totalPayment)}</p>
+      <p><strong>${t.totalInterest}:</strong> ${window.loanCalculator.formatCurrency(result.totalInterest)}</p>
+      <p><strong>${t.interestRate}:</strong> ${window.loanCalculator.formatPercent(result.annualRatePercent)}</p>
+    `;
+    summary.dataset.rendered = 'true';
+
+    resultContainer.replaceChildren();
+
+    if (result.mode === 'prepayment' && result.sections) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'schedule-groups';
+      wrapper.appendChild(renderTable(result.sections.before, t, t.beforeScheduleSection, true));
+      wrapper.appendChild(renderTable(result.sections.after, t, t.afterScheduleSection, true));
+      resultContainer.appendChild(wrapper);
+
+      const prepaySummary = document.createElement('div');
+      prepaySummary.className = 'summary';
+      prepaySummary.innerHTML = `
+        <p><strong>${t.prepaymentSummary}:</strong></p>
+        <p>${t.prepaymentAmountApplied}: ${window.loanCalculator.formatCurrency(result.prepayDetails.amount)}</p>
+        <p>${t.prepaymentRemainingBalance}: ${window.loanCalculator.formatCurrency(result.prepayDetails.remainingPrincipalAfterPrepayment)}</p>
+        <p>${t.prepaymentFinalMonths}: ${result.prepayDetails.finalMonths}</p>
+      `;
+      summary.appendChild(prepaySummary);
+    } else {
+      const table = document.createElement('table');
+      table.className = 'results-table';
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th>${t.periodHeader}</th>
+            <th>${t.paymentHeader}</th>
+            <th>${t.principalHeader}</th>
+            <th>${t.interestHeader}</th>
+            <th>${t.balanceHeader}</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      `;
+      const rows = table.querySelector('tbody');
+      result.records.forEach((record) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${record.period}</td>
+          <td>${window.loanCalculator.formatCurrency(record.monthlyPayment)}</td>
+          <td>${window.loanCalculator.formatCurrency(record.principalPaid)}</td>
+          <td>${window.loanCalculator.formatCurrency(record.interestPaid)}</td>
+          <td>${window.loanCalculator.formatCurrency(record.remainingAfterPayment)}</td>
+        `;
+        rows.appendChild(row);
+      });
+      resultContainer.appendChild(table);
+    }
   }
 
   form.addEventListener('submit', (event) => {
@@ -89,6 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     lastResult = result;
+    lastPrepaymentResult = null;
     renderResult(result);
   });
 
@@ -96,29 +165,42 @@ document.addEventListener('DOMContentLoaded', () => {
     event.preventDefault();
 
     if (!lastResult) {
+      setMessage('Please calculate the loan plan first.', true);
       return;
     }
 
-    const prepaymentResult = window.loanCalculator.calculateSinglePrepayment(lastResult, {
-      period: prepaymentForm.prepaymentPeriod.value,
-      amount: prepaymentForm.prepaymentAmount.value,
-      strategy: prepaymentForm.prepaymentStrategy.value,
-    });
+    const period = Math.round(Number(prepaymentForm.prepaymentPeriod.value));
+    const amount = Math.round(Number(prepaymentForm.prepaymentAmount.value));
+    const balanceAtPeriod = lastResult.records[period - 1]?.remainingAfterPayment;
 
-    lastPrepaymentResult = prepaymentResult;
-    renderResult(prepaymentResult);
+    if (!Number.isInteger(period) || period < 1 || period >= lastResult.totalMonths) {
+      setMessage('Please select a valid repayment period.', true);
+      return;
+    }
 
-    const lang = window.i18n.getInitialLanguage();
-    const t = window.i18n.translations[lang] || window.i18n.translations.en;
-    const prepaySummary = document.createElement('div');
-    prepaySummary.className = 'summary';
-    prepaySummary.innerHTML = `
-      <p><strong>${t.prepaymentSummary}:</strong></p>
-      <p>${t.prepaymentAmountApplied}: ${window.loanCalculator.formatCurrency(prepaymentResult.prepayDetails.amount)}</p>
-      <p>${t.prepaymentRemainingBalance}: ${window.loanCalculator.formatCurrency(prepaymentResult.prepayDetails.remainingPrincipalAfterPrepayment)}</p>
-      <p>${t.prepaymentFinalMonths}: ${prepaymentResult.prepayDetails.finalMonths}</p>
-    `;
-    summary.appendChild(prepaySummary);
+    if (!Number.isInteger(amount) || amount < 1) {
+      setMessage('The prepayment amount must be an integer greater than zero.', true);
+      return;
+    }
+
+    if (balanceAtPeriod === undefined || amount > balanceAtPeriod) {
+      setMessage('The prepayment amount cannot exceed the outstanding balance at the selected period.', true);
+      return;
+    }
+
+    try {
+      const prepaymentResult = window.loanCalculator.calculateSinglePrepayment(lastResult, {
+        period: prepaymentForm.prepaymentPeriod.value,
+        amount: prepaymentForm.prepaymentAmount.value,
+        strategy: prepaymentForm.prepaymentStrategy.value,
+      });
+
+      lastPrepaymentResult = prepaymentResult;
+      renderResult(prepaymentResult);
+      setMessage('');
+    } catch (error) {
+      setMessage(error.message, true);
+    }
   });
 
   resetButton.addEventListener('click', () => {
@@ -129,7 +211,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const language = event.target.value;
     window.localStorage.setItem('loan-calculator-language', language);
     window.i18n.applyLanguage(language);
-    if (lastResult) {
+    if (lastPrepaymentResult) {
+      renderResult(lastPrepaymentResult);
+    } else if (lastResult) {
       renderResult(lastResult);
     }
   });

@@ -77,8 +77,10 @@
     return {
       principal: principalValue,
       annualRatePercent: annualRate * 100,
+      annualRate,
       totalMonths: months,
       method,
+      monthlyRate,
       monthlyPayment: Number(monthlyPayment.toFixed(2)),
       totalPayment: Number(totalPayment.toFixed(2)),
       totalInterest: Number(totalInterest.toFixed(2)),

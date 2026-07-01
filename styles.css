@@ -132,6 +132,31 @@ p {
   background: #f8fafc;
 }
 
+.highlight-row {
+  background: #fef3c7;
+}
+
+.schedule-groups {
+  display: grid;
+  gap: 1rem;
+}
+
+.schedule-section summary {
+  cursor: pointer;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.form-message {
+  margin: 0.5rem 0 0;
+  min-height: 1.25rem;
+  color: #2563eb;
+}
+
+.form-message.error {
+  color: #dc2626;
+}
+
 .prepayment-panel {
   margin-top: 1.5rem;
   padding: 1.25rem;

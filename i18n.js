@@ -34,6 +34,8 @@
       prepaymentAmountApplied: 'Amount applied',
       prepaymentRemainingBalance: 'Remaining balance after repayment',
       prepaymentFinalMonths: 'Final months',
+      beforeScheduleSection: 'Before prepayment',
+      afterScheduleSection: 'After prepayment',
     },
     zh: {
       title: '贷款计算器',
@@ -69,6 +71,8 @@
       prepaymentAmountApplied: '已申请金额',
       prepaymentRemainingBalance: '还款后余额',
       prepaymentFinalMonths: '最终期数',
+      beforeScheduleSection: '提前还款前',
+      afterScheduleSection: '提前还款后',
     },
   };
 
