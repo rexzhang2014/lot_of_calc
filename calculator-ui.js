@@ -30,9 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
     resultContainer.replaceChildren();
     setMessage('');
     form.reset();
-    form.principal.value = '650000';
-    form.annualRate.value = '3.91';
-    form.totalMonths.value = '324';
+    form.principal.value = '1000000';
+    form.annualRate.value = '3.25';
+    form.totalMonths.value = '360';
     form.method.value = 'equal-interest';
     prepaymentForm.reset();
     prepaymentForm.prepaymentStrategy.value = 'shorten-term';
