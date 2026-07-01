@@ -10,35 +10,45 @@
   <body>
     <main>
       <section class="hero">
-        <span class="badge">GitHub Pages</span>
-        <h1>Loan Calculator</h1>
-        <p>Enter your loan details and calculate the repayment schedule directly in your browser.</p>
+        <div class="top-bar">
+          <span id="badge" class="badge">GitHub Pages</span>
+          <div class="language-switcher">
+            <label for="language" id="language-label">Language</label>
+            <select id="language" name="language">
+              <option value="en">English</option>
+              <option value="zh">中文</option>
+            </select>
+          </div>
+        </div>
+
+        <h1 id="page-title">Loan Calculator</h1>
+        <p id="page-intro">Enter your loan details and calculate the repayment schedule directly in your browser.</p>
 
         <form id="loan-form" class="loan-form">
-          <label>
+          <label id="principal-label" for="principal">
             Principal
-            <input type="number" name="principal" value="650000" min="0" step="1000" required />
           </label>
+          <input id="principal" type="number" name="principal" value="650000" min="0" step="1000" required />
 
-          <label>
+          <label id="annual-rate-label" for="annualRate">
             Annual rate (%)
-            <input type="number" name="annualRate" value="3.91" min="0" step="0.01" required />
           </label>
+          <input id="annualRate" type="number" name="annualRate" value="3.91" min="0" step="0.01" required />
 
-          <label>
+          <label id="total-months-label" for="totalMonths">
             Total months
-            <input type="number" name="totalMonths" value="324" min="1" step="1" required />
           </label>
+          <input id="totalMonths" type="number" name="totalMonths" value="324" min="1" step="1" required />
 
-          <label>
+          <label id="method-label" for="method">
             Repayment method
-            <select name="method">
-              <option value="equal-interest">Equal principal and interest</option>
-              <option value="equal-principal">Equal principal</option>
-            </select>
           </label>
+          <select id="method" name="method">
+            <option value="equal-interest">Equal principal and interest</option>
+            <option value="equal-principal">Equal principal</option>
+          </select>
 
-          <button type="submit">Calculate</button>
+          <button id="calculate-button" type="submit">Calculate</button>
         </form>
 
         <div id="summary" class="summary"></div>
@@ -47,6 +57,7 @@
     </main>
 
     <script src="calculator-core.js"></script>
+    <script src="i18n.js"></script>
     <script src="calculator-ui.js"></script>
   </body>
 </html>

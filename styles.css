@@ -44,6 +44,27 @@ p {
   margin: 0 0 1rem;
 }
 
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.language-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.language-switcher select {
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+
 .loan-form {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
