@@ -1,15 +1,16 @@
-# Hello World Page
+# Loan Calculator Page
 
-This repository contains a minimal static webpage for GitHub Pages.
+This repository hosts a static loan calculator website published with GitHub Pages.
 
-- project URL: [text](https://rexzhang2014.github.io/lot_of_calc/)
+- Project URL: https://rexzhang2014.github.io/lot_of_calc/
 
-## Files
+## What this webpage does
 
-- `index.html` - the homepage content
+This page lets users:
 
-## Publish on GitHub Pages
-
-1. Commit and push these files to GitHub.
-2. Open your repository settings.
-3. Enable Pages and choose the main branch with the root folder.
+- enter loan principal, annual interest rate, loan term, and repayment method
+- calculate the repayment schedule directly in the browser
+- switch between English and Chinese
+- apply one-time repayments and see how the remaining balance and schedule change
+- review repayment phases in a timeline-style schedule
+- keep the repayment panel visible while scrolling the page
