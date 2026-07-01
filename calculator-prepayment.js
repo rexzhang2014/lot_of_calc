@@ -33,23 +33,25 @@
     const remainingPrincipal = balanceAfterScheduledPayment - prepayAmount;
     const remainingMonths = originalResult.totalMonths - prepayPeriod;
     const monthlyRate = originalResult.monthlyRate;
+    const currentBalance = originalResult.currentBalance ?? originalResult.principal;
+    const currentMonthsRemaining = Math.max(1, remainingMonths);
     let newMonths = remainingMonths;
     let newMonthlyPayment = 0;
 
     if (strategy === 'shorten-term') {
       if (originalResult.method === 'equal-principal') {
-        const originalMonthlyPrincipal = originalResult.principal / originalResult.totalMonths;
-        newMonths = Math.max(1, Math.ceil(remainingPrincipal / originalMonthlyPrincipal));
+        const currentMonthlyPrincipal = currentBalance / currentMonthsRemaining;
+        newMonths = Math.max(1, Math.ceil(remainingPrincipal / currentMonthlyPrincipal));
       } else {
-        const originalMonthlyPayment = originalResult.records[0].monthlyPayment;
+        const currentMonthlyPayment = originalResult.monthlyPayment;
         if (monthlyRate === 0) {
-          newMonths = Math.max(1, Math.ceil(remainingPrincipal / originalMonthlyPayment));
+          newMonths = Math.max(1, Math.ceil(remainingPrincipal / currentMonthlyPayment));
         } else {
-          const denominator = originalMonthlyPayment - remainingPrincipal * monthlyRate;
+          const denominator = currentMonthlyPayment - remainingPrincipal * monthlyRate;
           if (denominator <= 0) {
             newMonths = 1;
           } else {
-            const n = Math.log(originalMonthlyPayment / denominator) / Math.log(1 + monthlyRate);
+            const n = Math.log(currentMonthlyPayment / denominator) / Math.log(1 + monthlyRate);
             newMonths = Math.max(1, Math.ceil(n));
           }
         }
@@ -143,11 +145,12 @@
     const previousTimeline = Array.isArray(originalResult.timelineSections)
       ? originalResult.timelineSections
       : [];
+    const previousRepaymentCount = previousTimeline.filter((section) => section.title.startsWith('After repayment')).length;
     const timelineSections = previousTimeline.length > 0
       ? [
           ...previousTimeline,
           {
-            title: `After repayment ${previousTimeline.length + 1}`,
+            title: `After repayment ${previousRepaymentCount + 1}`,
             records: [prepaymentRow, ...afterRecords],
           },
         ]
@@ -174,6 +177,7 @@
       totalInterest: Number((beforeInterest + afterInterest).toFixed(2)),
       interestSaved: Number((originalResult.totalInterest - (beforeInterest + afterInterest)).toFixed(2)),
       records: fullRecords,
+      currentBalance: remainingPrincipal,
       sections: {
         before: beforeRecords,
         after: [prepaymentRow, ...afterRecords],
