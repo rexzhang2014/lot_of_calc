@@ -22,6 +22,18 @@
       interestHeader: 'Interest',
       balanceHeader: 'Balance',
       languageLabel: 'Language',
+      prepaymentTitle: 'One-time repayment',
+      prepaymentIntro: 'Choose a repayment month and the amount to apply a one-time repayment.',
+      prepaymentPeriodLabel: 'Repayment month',
+      prepaymentAmountLabel: 'Repayment amount',
+      prepaymentStrategyLabel: 'Strategy',
+      prepaymentButton: 'Confirm repayment',
+      prepaymentShortenTerm: 'Shorten term',
+      prepaymentReducePayment: 'Reduce payment',
+      prepaymentSummary: 'Prepayment summary',
+      prepaymentAmountApplied: 'Amount applied',
+      prepaymentRemainingBalance: 'Remaining balance after repayment',
+      prepaymentFinalMonths: 'Final months',
     },
     zh: {
       title: '贷款计算器',
@@ -45,6 +57,18 @@
       interestHeader: '利息',
       balanceHeader: '余额',
       languageLabel: '语言',
+      prepaymentTitle: '一次性提前还款',
+      prepaymentIntro: '选择还款期数，并输入一次性提前还款金额。',
+      prepaymentPeriodLabel: '提前还款期数',
+      prepaymentAmountLabel: '提前还款金额',
+      prepaymentStrategyLabel: '策略',
+      prepaymentButton: '确认提前还款',
+      prepaymentShortenTerm: '缩短期限',
+      prepaymentReducePayment: '降低月供',
+      prepaymentSummary: '提前还款结果',
+      prepaymentAmountApplied: '已申请金额',
+      prepaymentRemainingBalance: '还款后余额',
+      prepaymentFinalMonths: '最终期数',
     },
   };
 
@@ -71,6 +95,15 @@
     document.getElementById('language-label').textContent = t.languageLabel;
     document.getElementById('calculate-button').textContent = t.calculateButton;
     document.getElementById('reset-button').textContent = t.resetButton;
+    document.getElementById('prepayment-title').textContent = t.prepaymentTitle;
+    document.getElementById('prepayment-intro').textContent = t.prepaymentIntro;
+    document.getElementById('prepayment-period-label').textContent = t.prepaymentPeriodLabel;
+    document.getElementById('prepayment-amount-label').textContent = t.prepaymentAmountLabel;
+    document.getElementById('prepayment-strategy-label').textContent = t.prepaymentStrategyLabel;
+    document.getElementById('prepayment-button').textContent = t.prepaymentButton;
+    const prepaymentStrategy = document.getElementById('prepayment-strategy');
+    prepaymentStrategy.querySelector('[value="shorten-term"]').textContent = t.prepaymentShortenTerm;
+    prepaymentStrategy.querySelector('[value="reduce-payment"]').textContent = t.prepaymentReducePayment;
 
     const methodSelect = document.getElementById('method');
     methodSelect.querySelector('[value="equal-interest"]').textContent = t.methodEqualInterest;

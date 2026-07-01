@@ -54,12 +54,36 @@
           </div>
         </form>
 
+        <section class="prepayment-panel">
+          <h2 id="prepayment-title">One-time repayment</h2>
+          <p id="prepayment-intro">Choose a repayment month and the amount to apply a one-time repayment.</p>
+
+          <form id="prepayment-form" class="loan-form prepayment-form">
+            <label id="prepayment-period-label" for="prepayment-period">Repayment month</label>
+            <input id="prepayment-period" type="number" name="prepaymentPeriod" min="1" step="1" required />
+
+            <label id="prepayment-amount-label" for="prepayment-amount">Repayment amount</label>
+            <input id="prepayment-amount" type="number" name="prepaymentAmount" min="1" step="100" required />
+
+            <label id="prepayment-strategy-label" for="prepayment-strategy">Strategy</label>
+            <select id="prepayment-strategy" name="prepaymentStrategy">
+              <option value="shorten-term">Shorten term</option>
+              <option value="reduce-payment">Reduce payment</option>
+            </select>
+
+            <div class="form-actions">
+              <button id="prepayment-button" type="submit">Confirm repayment</button>
+            </div>
+          </form>
+        </section>
+
         <div id="summary" class="summary"></div>
         <div id="result" class="result"></div>
       </section>
     </main>
 
     <script src="calculator-core.js"></script>
+    <script src="calculator-prepayment.js"></script>
     <script src="i18n.js"></script>
     <script src="calculator-ui.js"></script>
   </body>
