@@ -13,9 +13,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function resetView() {
     lastResult = null;
-    summary.innerHTML = '';
+    summary.replaceChildren();
     summary.dataset.rendered = 'false';
-    resultContainer.innerHTML = '';
+    resultContainer.replaceChildren();
     form.reset();
     form.principal.value = '650000';
     form.annualRate.value = '3.91';
