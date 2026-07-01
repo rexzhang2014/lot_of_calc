@@ -3,33 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello World</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        min-height: 100vh;
-        display: grid;
-        place-items: center;
-        background: #f5f7fb;
-        color: #1f2937;
-      }
-      .card {
-        text-align: center;
-        padding: 2rem 3rem;
-        border-radius: 12px;
-        background: white;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-      }
-      h1 {
-        margin-bottom: 0.5rem;
-      }
-    </style>
+    <meta name="description" content="A simple runnable website for GitHub Pages." />
+    <title>Lot of Calc</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="card">
-      <h1>Hello, world!</h1>
-      <p>This is a minimal page ready for GitHub Pages.</p>
-    </div>
+    <main>
+      <section class="hero">
+        <span class="badge">GitHub Pages Ready</span>
+        <h1>Welcome to your site</h1>
+        <p>This is a simple, runnable website that serves correctly from the repository homepage.</p>
+        <div class="cta-row">
+          <a class="cta primary" href="https://github.com/rexzhang2014/lot_of_calc" target="_blank" rel="noreferrer">View Repository</a>
+          <a class="cta secondary" href="https://pages.github.com/" target="_blank" rel="noreferrer">Learn More</a>
+        </div>
+
+        <div class="features">
+          <article class="card">
+            <h2>Static Site</h2>
+            <p>No build step required.</p>
+          </article>
+          <article class="card">
+            <h2>Fast</h2>
+            <p>Lightweight HTML, CSS, and JavaScript.</p>
+          </article>
+          <article class="card">
+            <h2>Deployable</h2>
+            <p>Works directly from GitHub Pages.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
   </body>
 </html>
