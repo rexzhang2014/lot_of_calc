@@ -186,6 +186,33 @@ p {
   margin: 1rem 0 0;
 }
 
+.scroll-to-top {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  width: 52px;
+  height: 52px;
+  border: none;
+  border-radius: 50%;
+  background: #2563eb;
+  color: white;
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.28);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 1000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.scroll-to-top:hover,
+.scroll-to-top:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(37, 99, 235, 0.35);
+}
+
 @media (max-width: 640px) {
   .hero {
     padding: 1.25rem;
@@ -223,5 +250,13 @@ p {
     top: auto;
     z-index: auto;
     padding: 1rem;
+  }
+
+  .scroll-to-top {
+    right: 0.9rem;
+    bottom: 0.9rem;
+    width: 48px;
+    height: 48px;
+    font-size: 1.6rem;
   }
 }

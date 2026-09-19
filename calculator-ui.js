@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const languageSelect = document.getElementById('language');
   const resetButton = document.getElementById('reset-button');
   const prepaymentMessage = document.getElementById('prepayment-message');
+  const scrollToTopButton = document.getElementById('scroll-to-top');
 
   if (!form || !prepaymentForm || !resultContainer || !summary || !languageSelect || !resetButton) {
     return;
@@ -232,6 +233,17 @@ document.addEventListener('DOMContentLoaded', () => {
       renderResult(lastResult);
     }
   });
+
+  if (scrollToTopButton) {
+    scrollToTopButton.addEventListener('click', () => {
+      const principalInput = document.getElementById('principal');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (principalInput) {
+        principalInput.focus({ preventScroll: true });
+        principalInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+  }
 
   const initialLanguage = window.i18n.getInitialLanguage();
   languageSelect.value = initialLanguage;
