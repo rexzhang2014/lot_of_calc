@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -11,7 +15,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: clamp(1rem, 3vw, 2rem);
 }
 
 .hero {
@@ -180,4 +184,44 @@ p {
 
 .prepayment-form {
   margin: 1rem 0 0;
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+
+  .top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .language-switcher {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .language-switcher select {
+    flex: 1;
+  }
+
+  .loan-form {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    width: 100%;
+  }
+
+  .prepayment-panel {
+    position: static;
+    top: auto;
+    z-index: auto;
+    padding: 1rem;
+  }
 }
